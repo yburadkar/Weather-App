@@ -1,6 +1,6 @@
 package com.yb.corethree.di
 
-import com.yb.corethree.MainActivity
+import com.yb.corethree.features.main.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 
