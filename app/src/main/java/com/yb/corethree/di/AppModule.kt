@@ -5,7 +5,7 @@ import com.yb.corethree.App
 import com.yb.corethree.R
 import com.yb.corethree.common.Navigator
 import com.yb.corethree.common.ToolbarManager
-import com.yb.corethree.data.entities.api.ApiCityList
+import com.yb.corethree.data.remote.ApiCityList
 import com.yb.corethree.domain.entities.CityList
 import dagger.Module
 import dagger.Provides

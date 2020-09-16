@@ -1,4 +1,4 @@
-package com.yb.corethree.data.entities.api
+package com.yb.corethree.data.remote
 
 import com.yb.corethree.domain.entities.City
 import com.yb.corethree.domain.entities.CityList
