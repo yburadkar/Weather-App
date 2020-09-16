@@ -1,5 +1,12 @@
 package com.yb.corethree.di
 
+import com.google.gson.Gson
+import com.yb.corethree.App
+import com.yb.corethree.R
+import com.yb.corethree.common.Navigator
+import com.yb.corethree.common.ToolbarManager
+import com.yb.corethree.data.entities.api.ApiCityList
+import com.yb.corethree.domain.entities.CityList
 import dagger.Module
 import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +19,7 @@ import javax.inject.Singleton
 
 
 @Module
-class AppModule {
+class AppModule(private val application: App) {
 
     @Singleton
     @Provides
@@ -23,6 +30,12 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideCityList(): CityList {
+        return gson().fromJson(application.applicationContext.resources.openRawResource(R.raw.citylist).bufferedReader().readText(), ApiCityList::class.java)
+    }
+
+    @Singleton
+    @Provides
     @Named("io")
     fun io() = Schedulers.io()
 
@@ -30,6 +43,18 @@ class AppModule {
     @Provides
     @Named("ui")
     fun ui() = AndroidSchedulers.mainThread()
+
+    @Singleton
+    @Provides
+    fun provideNavigator() = Navigator
+
+    @Singleton
+    @Provides
+    fun provideToolbarManager() = ToolbarManager
+
+    @Singleton
+    @Provides
+    fun gson() = Gson()
 
     companion object {
         private const val BASE_URL = ""

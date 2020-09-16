@@ -17,6 +17,5 @@ object Navigator {
 }
 
 sealed class NavigationEvent
-object WeatherNavigationEvent : NavigationEvent()
 object SearchWeatherNavigationEvent : NavigationEvent()
 object DetailWeatherNavigationEvent : NavigationEvent()

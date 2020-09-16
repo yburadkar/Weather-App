@@ -10,11 +10,12 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.yb.corethree.App
 import com.yb.corethree.databinding.FragmentSearchBinding
+import timber.log.Timber
 
 class SearchFragment: Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
-    private val binding = _binding!!
+    private val binding: FragmentSearchBinding by lazy { _binding!! }
 
     override fun onAttach(context: Context) {
         inject()
@@ -34,7 +35,7 @@ class SearchFragment: Fragment() {
         with(binding) {
             etCityName.addTextChangedListener {
                 it?.takeIf { it.trimmedLength() > 2 }
-                    ?.let {  }
+                    ?.let { Timber.d("${it.trim()}") }
             }
         }
     }
@@ -45,6 +46,12 @@ class SearchFragment: Fragment() {
     }
     private fun inject() {
         (requireActivity().application as App).appComponent.inject(this)
+    }
+
+    companion object {
+        fun newInstance(): SearchFragment {
+            return SearchFragment()
+        }
     }
 
 }

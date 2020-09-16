@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.yb.corethree.common.DisposingViewModel
 import com.yb.corethree.common.NavigationEvent
 import com.yb.corethree.common.Navigator
+import com.yb.corethree.common.SearchWeatherNavigationEvent
 import com.yb.corethree.common.ToolbarManager
 import com.yb.corethree.common.ToolbarUpdate
 import com.yb.corethree.common.UIEvent
-import com.yb.corethree.common.WeatherNavigationEvent
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
@@ -45,8 +45,8 @@ class MainViewModel @Inject constructor(
             }.addTo(disposables)
     }
 
-    fun navigateToWeatherScreen() {
-        navigator.sendNavigationEvent(WeatherNavigationEvent)
+    fun navigateToSearchScreen() {
+        navigator.sendNavigationEvent(SearchWeatherNavigationEvent)
     }
 
 }

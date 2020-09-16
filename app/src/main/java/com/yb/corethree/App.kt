@@ -17,7 +17,7 @@ class App: Application() {
     }
 
     private fun initDi() {
-        appComponent = DaggerAppComponent.builder().appModule(AppModule()).build()
+        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
     }
 
     private fun initTimber() {
