@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">corethree-kotlin-task</string>
+    <string name="city_name_hint_text">City Name</string>
 </resources>
