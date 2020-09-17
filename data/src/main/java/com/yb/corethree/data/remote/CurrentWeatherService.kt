@@ -6,7 +6,11 @@ import retrofit2.http.Query
 
 interface CurrentWeatherService {
 
-    @GET("/group")
-    fun getCurrentWeatherForCities(@Query("id") group: List<Int>, @Query("APPID") apiKey: String): Single<ApiGroupWeatherResponse>
+    @GET("group")
+    fun getCurrentWeatherForCities(
+        @Query("id") group: String,
+        @Query("APPID") apiKey: String,
+        @Query("units") units: String = "metric"
+    ): Single<ApiGroupWeatherResponse>
 
 }

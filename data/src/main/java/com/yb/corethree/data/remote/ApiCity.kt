@@ -9,7 +9,7 @@ class ApiCityList(
 ) : CityList
 
 class ApiCity (
-    override val id: Int? = null,
-    override val name: String? = null,
+    override val id: Int,
+    override val name: String,
     override val country: String? = null
 ) : City

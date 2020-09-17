@@ -11,7 +11,14 @@ class CurrentWeatherRepository @Inject constructor(
 ) : ICurrentWeatherRepository {
 
     override fun getCurrentWeather(group: List<Int>, key: String): Single<GroupWeatherResponse> {
-        return currentWeatherService.getCurrentWeatherForCities(group, key).map { it as GroupWeatherResponse }
+        return currentWeatherService.getCurrentWeatherForCities(group.toStringList(), key).map { it as GroupWeatherResponse }
+    }
+
+    private fun List<Int>.toStringList() : String{
+        val text = this.map{ it.toString() }.reduce { acc, i ->
+            "$acc,$i"
+        }
+        return text
     }
 
 }

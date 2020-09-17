@@ -5,7 +5,7 @@ interface CityList {
 }
 
 interface City {
-    val id: Int?
-    val name: String?
+    val id: Int
+    val name: String
     val country: String?
 }
