@@ -10,6 +10,7 @@ import com.yb.corethree.common.Resource
 import com.yb.corethree.domain.entities.CityList
 import com.yb.corethree.domain.entities.CityWeatherResponse
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
+import com.yb.corethree.models.City
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.rxkotlin.addTo
@@ -67,10 +68,9 @@ class SearchViewModel @Inject constructor(
             .map { it.id }
     }
 
-    fun navigateToDetail(cityId: Int) {
-        navigator.sendNavigationEvent(DetailWeatherNavigationEvent(cityId))
+    fun navigateToDetail(city: City) {
+        navigator.sendNavigationEvent(DetailWeatherNavigationEvent(city))
     }
-
 
 
 }

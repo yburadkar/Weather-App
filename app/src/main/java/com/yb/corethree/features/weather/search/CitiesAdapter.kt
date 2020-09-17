@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yb.corethree.databinding.ItemCityBinding
+import com.yb.corethree.models.City
 
-class CitiesAdapter(): ListAdapter<CitiesAdapter.CityItem, CitiesAdapter.CityViewHolder>(DIFF_CALLBACK) {
+class CitiesAdapter(
+    private val resultClickAction: (City) -> Unit
+) : ListAdapter<City, CitiesAdapter.CityViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
         val binding = ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,31 +21,24 @@ class CitiesAdapter(): ListAdapter<CitiesAdapter.CityItem, CitiesAdapter.CityVie
         holder.bind(getItem(position))
     }
 
-    class CityViewHolder(private val binding: ItemCityBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CityItem) {
+    inner class CityViewHolder(private val binding: ItemCityBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: City) {
             with(binding) {
                 tvName.text = item.name
                 tvDescription.text = item.description
                 tvTemp.text = item.temp
                 tvWindSpeed.text = item.speed
+                root.setOnClickListener { resultClickAction.invoke(item) }
             }
         }
     }
 
-    data class CityItem(
-        val name: String,
-        val temp: String,
-        val description: String,
-        val speed: String,
-        val direction: Float
-    )
-
     companion object {
 
-        private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<CityItem>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<City>() {
 
-            override fun areItemsTheSame(oldItem: CityItem, newItem: CityItem): Boolean = oldItem === newItem
-            override fun areContentsTheSame(oldItem: CityItem, newItem: CityItem): Boolean = oldItem == newItem
+            override fun areItemsTheSame(oldItem: City, newItem: City): Boolean = oldItem === newItem
+            override fun areContentsTheSame(oldItem: City, newItem: City): Boolean = oldItem == newItem
 
         }
     }

@@ -2,16 +2,20 @@ package com.yb.corethree.models
 
 import java.util.*
 
-
-sealed class ForecastItem(val id: String = UUID.randomUUID().toString())
+sealed class ForecastItem(val type: Int, val id: String = UUID.randomUUID().toString()) {
+    companion object {
+        const val FORECAST_DATE = 0
+        const val FORECAST_ENTRY = 1
+    }
+}
 
 data class ForecastDate(
-    private val date: String
-): ForecastItem()
+    val date: String
+) : ForecastItem(FORECAST_DATE)
 
 data class ForecastEntry(
-    private val time: String,
-    private val temp: String,
-    private val description: String,
-    private val windSpeed: String
-): ForecastItem()
+    val time: String,
+    val temp: String,
+    val description: String,
+    val windSpeed: String
+) : ForecastItem(FORECAST_ENTRY)

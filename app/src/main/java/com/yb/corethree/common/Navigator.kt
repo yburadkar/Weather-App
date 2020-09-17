@@ -1,5 +1,6 @@
 package com.yb.corethree.common
 
+import com.yb.corethree.models.City
 import io.reactivex.subjects.PublishSubject
 
 object Navigator {
@@ -18,4 +19,4 @@ object Navigator {
 
 sealed class NavigationEvent
 object SearchWeatherNavigationEvent : NavigationEvent()
-class DetailWeatherNavigationEvent(val cityId: Int) : NavigationEvent()
+class DetailWeatherNavigationEvent(val cityId: City) : NavigationEvent()

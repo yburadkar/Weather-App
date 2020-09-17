@@ -14,7 +14,7 @@ object DetailForecastMapper {
         forecasts.forEach {
             val timestamp = it.time.split(' ')
             val date = timestamp[0]
-            val time = timestamp[1]
+            val time = timestamp[1].dropLast(3)
             if(date != prevDate) {
                 list.add(ForecastDate(date = date))
                 prevDate = date

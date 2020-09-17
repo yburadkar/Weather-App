@@ -18,9 +18,9 @@ import com.yb.corethree.common.ResourceStatus.LOADING
 import com.yb.corethree.databinding.FragmentSearchBinding
 import com.yb.corethree.di.ViewModelFactory
 import com.yb.corethree.domain.entities.CityWeatherResponse
-import com.yb.corethree.features.weather.search.CitiesAdapter.CityItem
+import com.yb.corethree.mappers.SearchCityMapper
+import com.yb.corethree.models.City
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class SearchFragment : Fragment() {
 
@@ -29,6 +29,9 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding by lazy { _binding!! }
     private lateinit var citiesAdapter: CitiesAdapter
+    private val resultClickAction: (City) -> Unit = {
+        viewModel.navigateToDetail(city = it)
+    }
 
     override fun onAttach(context: Context) {
         inject()
@@ -51,19 +54,7 @@ class SearchFragment : Fragment() {
 
     private fun renderViewState(resource: Resource<List<CityWeatherResponse>>) {
         showUserMessages(resource.status)
-        citiesAdapter.submitList(mapCityItems(resource.data))
-    }
-
-    private fun mapCityItems(cities: List<CityWeatherResponse>?): List<CityItem> {
-        return cities?.map { response ->
-            CityItem(
-                name = "${response.name}, ${response.sys.country}",
-                temp = response.main?.temp?.roundToInt()?.let { "$it c" } ?: "NA",
-                description = response.weather?.first()?.main ?: "",
-                speed = response.wind?.speed?.roundToInt()?.let { "$it m/s" } ?: "",
-                direction = response.wind?.deg ?: 0.0F
-            )
-        } ?: emptyList()
+        citiesAdapter.submitList(SearchCityMapper.map(resource.data))
     }
 
     private fun showUserMessages(status: ResourceStatus) {
@@ -79,7 +70,7 @@ class SearchFragment : Fragment() {
                 text?.takeIf { it.trimmedLength() > 2 }
                     ?.let { viewModel.searchText.onNext(it.trim().toString()) }
             }
-            citiesAdapter = CitiesAdapter()
+            citiesAdapter = CitiesAdapter(resultClickAction)
             rvCities.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = citiesAdapter
