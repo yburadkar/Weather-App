@@ -1,5 +1,6 @@
 package com.yb.corethree.data.remote.repos
 
+import com.yb.corethree.data.remote.ApiGroupWeatherResponse
 import com.yb.corethree.data.remote.CurrentWeatherService
 import com.yb.corethree.domain.entities.GroupWeatherResponse
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
@@ -11,7 +12,8 @@ class CurrentWeatherRepository @Inject constructor(
 ) : ICurrentWeatherRepository {
 
     override fun getCurrentWeather(group: List<Int>, key: String): Single<GroupWeatherResponse> {
-        return currentWeatherService.getCurrentWeatherForCities(group.toStringList(), key).map { it as GroupWeatherResponse }
+        return if(group.isEmpty()) Single.just(ApiGroupWeatherResponse(cities = emptyList()))
+        else currentWeatherService.getCurrentWeatherForCities(group.toStringList(), key).map { it as GroupWeatherResponse }
     }
 
     private fun List<Int>.toStringList() : String{

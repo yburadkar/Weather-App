@@ -1,10 +1,14 @@
 package com.yb.corethree.features.weather.search
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.yb.corethree.BuildConfig
 import com.yb.corethree.common.DetailWeatherNavigationEvent
 import com.yb.corethree.common.DisposingViewModel
 import com.yb.corethree.common.Navigator
+import com.yb.corethree.common.Resource
 import com.yb.corethree.domain.entities.CityList
+import com.yb.corethree.domain.entities.CityWeatherResponse
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -24,6 +28,9 @@ class SearchViewModel @Inject constructor(
     private val navigator: Navigator
 ) : DisposingViewModel() {
 
+    private val _cities = MutableLiveData<Resource<List<CityWeatherResponse>>>()
+    val cities: LiveData<Resource<List<CityWeatherResponse>>> = _cities
+
     val searchText = PublishSubject.create<String>()
 
     init {
@@ -37,15 +44,18 @@ class SearchViewModel @Inject constructor(
     private fun getSearchResults() {
         onSearchChange().debounce(1000, TimeUnit.MILLISECONDS)
             .map { getMatchingCities(it) }
-            .switchMapSingle { currentWeatherRepo.getCurrentWeather(it, BuildConfig.OPEN_WEATHER_API_KEY) }
+            .switchMapSingle {
+                _cities.postValue(Resource.loading(null))
+                currentWeatherRepo.getCurrentWeather(it, BuildConfig.OPEN_WEATHER_API_KEY)
+            }
             .subscribeOn(io)
             .observeOn(ui)
             .subscribeBy(
                 onError = {
-                    Timber.e(it)
+                    _cities.value = Resource.error(data = null, error = it)
                 },
                 onNext = {
-                    Timber.d("Count = ${it.cities.size}")
+                    _cities.value = Resource.success(data = it.cities)
                 }
             ).addTo(disposables)
     }
@@ -60,5 +70,7 @@ class SearchViewModel @Inject constructor(
     fun navigateToDetail(cityId: Int) {
         navigator.sendNavigationEvent(DetailWeatherNavigationEvent(cityId))
     }
+
+
 
 }
