@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import androidx.core.text.trimmedLength
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.yb.corethree.App
 import com.yb.corethree.databinding.FragmentSearchBinding
-import timber.log.Timber
+import com.yb.corethree.di.ViewModelFactory
+import javax.inject.Inject
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
 
+    @Inject lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel: SearchViewModel by viewModels { viewModelFactory }
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding by lazy { _binding!! }
 
@@ -29,13 +33,18 @@ class SearchFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+
     }
 
     private fun setUpViews() {
         with(binding) {
-            etCityName.addTextChangedListener {
-                it?.takeIf { it.trimmedLength() > 2 }
-                    ?.let { Timber.d("${it.trim()}") }
+            etCityName.addTextChangedListener { text ->
+                text?.takeIf { it.trimmedLength() > 2 }
+                    ?.let { viewModel.searchText.onNext(it.trim().toString()) }
             }
         }
     }
@@ -44,6 +53,7 @@ class SearchFragment: Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun inject() {
         (requireActivity().application as App).appComponent.inject(this)
     }

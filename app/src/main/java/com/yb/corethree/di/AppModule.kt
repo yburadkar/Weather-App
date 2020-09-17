@@ -21,7 +21,7 @@ class AppModule(private val application: App) {
     @Singleton
     @Provides
     fun provideCityList(): CityList {
-        return gson().fromJson(application.applicationContext.resources.openRawResource(R.raw.citylist).bufferedReader().readText(), ApiCityList::class.java)
+        return gson().fromJson("{\"cities\": ${application.applicationContext.resources.openRawResource(R.raw.citylist).bufferedReader().readText()}}", ApiCityList::class.java)
     }
 
     @Singleton
