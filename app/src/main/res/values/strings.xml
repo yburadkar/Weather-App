@@ -4,4 +4,6 @@
     <string name="loading_error_message">Failed to load results</string>
     <string name="search_fragment_title">Current Weather</string>
     <string name="detail_fragment_title">Detail Forecast</string>
+    <string name="no_matching_city_message">No matching cities found!</string>
+    <string name="loading_error_message">Failed to load results</string>
 </resources>

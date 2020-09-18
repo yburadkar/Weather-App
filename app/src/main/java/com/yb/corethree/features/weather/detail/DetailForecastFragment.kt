@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.yb.corethree.App
 import com.yb.corethree.R
 import com.yb.corethree.common.Resource
@@ -61,8 +62,8 @@ class DetailForecastFragment : Fragment() {
     }
 
     private fun showUserMessages(status: ResourceStatus) {
+        if (status == ResourceStatus.ERROR) showSnackBar(getString(R.string.loading_error_message))
         with(binding) {
-            tvLoadingError.visibility = if (status == ResourceStatus.ERROR) View.VISIBLE else View.GONE
             srlForecasts.isRefreshing = status == ResourceStatus.LOADING
         }
     }
@@ -77,6 +78,10 @@ class DetailForecastFragment : Fragment() {
             }
             srlForecasts.setOnRefreshListener { viewModel.getDetailForecast(cityId = city.id) }
         }
+    }
+
+    private fun showSnackBar(message: String, duration: Int = Snackbar.LENGTH_SHORT) {
+        Snackbar.make(requireView(), message, duration).show()
     }
 
     private fun inject() {
