@@ -28,6 +28,7 @@ class CitiesAdapter(
                 tvDescription.text = item.description
                 tvTemp.text = item.temp
                 tvWindSpeed.text = item.speed
+                ivWindDirection.setImageResource(item.windIcon)
                 root.setOnClickListener { resultClickAction.invoke(item) }
             }
         }
