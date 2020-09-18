@@ -13,7 +13,6 @@ import com.yb.corethree.domain.entities.CityList
 import com.yb.corethree.domain.entities.CityWeatherResponse
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
 import com.yb.corethree.models.City
-import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -36,21 +35,25 @@ class SearchViewModel @Inject constructor(
     val cities: LiveData<Resource<List<CityWeatherResponse>>> = _cities
 
     val searchText = PublishSubject.create<String>()
+    var prevSearchTerm = ""
 
     init {
-        Timber.d("init block")
         getSearchResults()
     }
 
-    private fun onSearchChange(): Observable<String> {
-        return searchText
+    fun updateSearchText(text: String) {
+        if (prevSearchTerm != text) {
+            searchText.onNext(text)
+            prevSearchTerm = text
+        }
     }
 
     private fun getSearchResults() {
-        onSearchChange().debounce(1000, TimeUnit.MILLISECONDS)
+        searchText.debounce(1000, TimeUnit.MILLISECONDS)
             .map { getMatchingCities(it) }
             .switchMapSingle {
                 _cities.postValue(Resource.loading(null))
+                Timber.d("Fetching current weather data for ${it.size} cities")
                 currentWeatherRepo.getCurrentWeather(it, BuildConfig.OPEN_WEATHER_API_KEY)
             }
             .subscribeOn(io)
@@ -79,6 +82,5 @@ class SearchViewModel @Inject constructor(
     fun sendToolbarUpdate(update: TextToolbarUpdate) {
         toolbarManager.sendToolbarUpdate(update)
     }
-
 
 }
