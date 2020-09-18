@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.yb.corethree.BuildConfig
 import com.yb.corethree.common.DisposingViewModel
 import com.yb.corethree.common.Resource
+import com.yb.corethree.common.TextToolbarUpdate
+import com.yb.corethree.common.ToolbarManager
 import com.yb.corethree.domain.repos.IDetailForecastRepository
 import com.yb.corethree.mappers.DetailForecastMapper
 import com.yb.corethree.models.ForecastItem
@@ -17,7 +19,8 @@ import javax.inject.Named
 class DetailForecastViewModel @Inject constructor(
     private val detailForecastRepo: IDetailForecastRepository,
     @Named("io") private val io: Scheduler,
-    @Named("ui") private val ui: Scheduler
+    @Named("ui") private val ui: Scheduler,
+    private val toolbarManager: ToolbarManager
 ) : DisposingViewModel() {
 
     private val _forecasts = MutableLiveData<Resource<List<ForecastItem>>>()
@@ -41,6 +44,10 @@ class DetailForecastViewModel @Inject constructor(
                 }
             ).addTo(disposables)
 
+    }
+
+    fun sendToolbarUpdate(update: TextToolbarUpdate) {
+        toolbarManager.sendToolbarUpdate(update)
     }
 
 }

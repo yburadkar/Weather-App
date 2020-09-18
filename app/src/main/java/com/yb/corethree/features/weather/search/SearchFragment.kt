@@ -11,15 +11,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yb.corethree.App
+import com.yb.corethree.R
 import com.yb.corethree.common.Resource
 import com.yb.corethree.common.ResourceStatus
 import com.yb.corethree.common.ResourceStatus.ERROR
 import com.yb.corethree.common.ResourceStatus.LOADING
+import com.yb.corethree.common.TextToolbarUpdate
 import com.yb.corethree.databinding.FragmentSearchBinding
 import com.yb.corethree.di.ViewModelFactory
 import com.yb.corethree.domain.entities.CityWeatherResponse
 import com.yb.corethree.mappers.SearchCityMapper
 import com.yb.corethree.models.City
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
@@ -36,6 +39,7 @@ class SearchFragment : Fragment() {
     override fun onAttach(context: Context) {
         inject()
         super.onAttach(context)
+        Timber.d("onAttach")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,8 +48,15 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.d("onViewCreated")
         setUpViews()
         observeViewModel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.sendToolbarUpdate(TextToolbarUpdate(getString(R.string.search_fragment_title)))
+        Timber.d("onStart")
     }
 
     private fun observeViewModel() {
@@ -53,6 +64,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun renderViewState(resource: Resource<List<CityWeatherResponse>>) {
+        Timber.d("renderViewState")
         showUserMessages(resource.status)
         citiesAdapter.submitList(SearchCityMapper.map(resource.data))
     }
@@ -82,8 +94,14 @@ class SearchFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        Timber.d("onDestroyView")
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Timber.d("onStop")
     }
 
     private fun inject() {

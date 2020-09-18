@@ -1,15 +1,17 @@
 package com.yb.corethree.features.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.yb.corethree.App
 import com.yb.corethree.R
 import com.yb.corethree.common.DetailWeatherNavigationEvent
 import com.yb.corethree.common.NavigationEvent
 import com.yb.corethree.common.SearchWeatherNavigationEvent
+import com.yb.corethree.common.TextToolbarUpdate
 import com.yb.corethree.common.ToolbarUpdate
 import com.yb.corethree.databinding.ActivityMainBinding
 import com.yb.corethree.di.ViewModelFactory
@@ -29,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
         observeViewModel()
-        if(savedInstanceState == null) viewModel.navigateToSearchScreen()
+        if (savedInstanceState == null) viewModel.navigateToSearchScreen()
     }
 
     private fun observeViewModel() {
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleNavigationEvent(navEvent: NavigationEvent) {
-        when(navEvent) {
+        when (navEvent) {
             is SearchWeatherNavigationEvent -> switchFragment(SearchFragment.newInstance(), addToBackStack = false)
             is DetailWeatherNavigationEvent -> {
                 switchFragment(DetailForecastFragment.newInstance(navEvent.cityId), addToBackStack = true)
@@ -54,13 +56,31 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment, CURRENT_FRAGMENT_TAG)
 
-        if(addToBackStack) transaction.addToBackStack(null)
+        if (addToBackStack) transaction.addToBackStack(null)
 
         transaction.commit()
     }
 
     private fun handleToolbarEvent(toolbarUpdate: ToolbarUpdate) {
+        when (toolbarUpdate) {
+            is TextToolbarUpdate -> updateToolbar(toolbarUpdate.title)
+        }
+    }
 
+    private fun updateToolbar(title: String) {
+        supportActionBar?.apply {
+            this.title = title
+            val showBack = supportFragmentManager.backStackEntryCount > 0
+            setDisplayShowHomeEnabled(showBack)
+            setDisplayHomeAsUpEnabled(showBack)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+        return true
     }
 
     private fun inject() {

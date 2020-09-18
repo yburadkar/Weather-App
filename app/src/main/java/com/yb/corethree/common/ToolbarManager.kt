@@ -19,4 +19,4 @@ object ToolbarManager {
 
 sealed class ToolbarUpdate
 
-class TextToolbarUpdate(val title: String, val showBack: Boolean) : ToolbarUpdate()
+class TextToolbarUpdate(val title: String) : ToolbarUpdate()

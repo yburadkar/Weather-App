@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yb.corethree.App
+import com.yb.corethree.R
 import com.yb.corethree.common.Resource
 import com.yb.corethree.common.ResourceStatus
+import com.yb.corethree.common.TextToolbarUpdate
 import com.yb.corethree.databinding.FragmentDetailForecastBinding
 import com.yb.corethree.di.ViewModelFactory
 import com.yb.corethree.models.City
@@ -40,6 +42,11 @@ class DetailForecastFragment : Fragment() {
         setUpViews()
         observeViewModel()
         viewModel.getDetailForecast(cityId = city.id)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.sendToolbarUpdate(TextToolbarUpdate(getString(R.string.detail_fragment_title)))
     }
 
     private fun observeViewModel() {

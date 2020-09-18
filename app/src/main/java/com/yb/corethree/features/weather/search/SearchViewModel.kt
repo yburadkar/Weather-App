@@ -7,6 +7,8 @@ import com.yb.corethree.common.DetailWeatherNavigationEvent
 import com.yb.corethree.common.DisposingViewModel
 import com.yb.corethree.common.Navigator
 import com.yb.corethree.common.Resource
+import com.yb.corethree.common.TextToolbarUpdate
+import com.yb.corethree.common.ToolbarManager
 import com.yb.corethree.domain.entities.CityList
 import com.yb.corethree.domain.entities.CityWeatherResponse
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
@@ -26,7 +28,8 @@ class SearchViewModel @Inject constructor(
     private val currentWeatherRepo: ICurrentWeatherRepository,
     @Named("io") private val io: Scheduler,
     @Named("ui") private val ui: Scheduler,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val toolbarManager: ToolbarManager
 ) : DisposingViewModel() {
 
     private val _cities = MutableLiveData<Resource<List<CityWeatherResponse>>>()
@@ -35,6 +38,7 @@ class SearchViewModel @Inject constructor(
     val searchText = PublishSubject.create<String>()
 
     init {
+        Timber.d("init block")
         getSearchResults()
     }
 
@@ -70,6 +74,10 @@ class SearchViewModel @Inject constructor(
 
     fun navigateToDetail(city: City) {
         navigator.sendNavigationEvent(DetailWeatherNavigationEvent(city))
+    }
+
+    fun sendToolbarUpdate(update: TextToolbarUpdate) {
+        toolbarManager.sendToolbarUpdate(update)
     }
 
 
