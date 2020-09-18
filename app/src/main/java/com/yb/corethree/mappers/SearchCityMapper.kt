@@ -10,7 +10,7 @@ object SearchCityMapper {
             City(
                 id = response.id,
                 name = "${response.name}, ${response.sys.country}",
-                temp = response.main?.temp?.roundToInt()?.let { "$it c" } ?: "NA",
+                temp = response.main?.temp?.roundToInt()?.let { "$it\u00B0C" } ?: "NA",
                 description = response.weather?.first()?.main ?: "",
                 speed = response.wind?.speed?.roundToInt()?.let { "$it m/s" } ?: "",
                 direction = response.wind?.deg ?: 0.0F

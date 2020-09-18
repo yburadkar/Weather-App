@@ -22,7 +22,7 @@ object DetailForecastMapper {
             list.add(
                 ForecastEntry(
                     time = time,
-                    temp = it.main?.temp?.let { temp -> "${temp.roundToInt()} C" } ?: "NA",
+                    temp = it.main?.temp?.let { temp -> "${temp.roundToInt()}\u00B0C" } ?: "NA",
                     description = it.weather?.get(0)?.main ?: "NA",
                     windSpeed = it.wind?.speed?.let { wind -> "${wind.roundToInt()} m/s" } ?: "NA"
                 )
