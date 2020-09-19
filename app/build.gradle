@@ -74,8 +74,33 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "com.jakewharton.timber:timber:$timber_version"
 
+    //Local unit testing
     testImplementation "junit:junit:$junit_version"
+    testImplementation "org.hamcrest:hamcrest:$hamcrest_version"
+    testImplementation "org.robolectric:robolectric:$robolectric_version"
+    testImplementation "androidx.arch.core:core-testing:$arch_core_testing_version"
+    kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test.ext:junit:$junit_ext_version"
+    testImplementation "androidx.test:core-ktx:$androidx_test_core_version"
+
+    //Instrumented testing
+    androidTestImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test:rules:$test_rules_version"
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$arch_core_testing_version"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
+    androidTestImplementation "io.mockk:mockk:$mockk_version"
+
+    // Testing code should not be included in the main code.
+    // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+    androidTestImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "androidx.test:core:$androidx_test_core_version"
 
 }
