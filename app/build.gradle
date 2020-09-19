@@ -18,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.yb.corethree.runner.CustomAndroidRunner"
 
         buildConfigField "String", "OPEN_WEATHER_API_KEY", credentialsProperties['OpenWeatherApiFreeKey']
     }
@@ -68,6 +68,7 @@ dependencies {
 
     implementation project(':data')
     implementation project(':domain')
+    androidTestImplementation project(':data')
 
     //Third party libraries
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

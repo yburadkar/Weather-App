@@ -1,30 +1,32 @@
-package com.yb.corethree.data.di
+package com.yb.corethree.di
 
 import com.yb.corethree.data.remote.CurrentWeatherService
 import com.yb.corethree.data.remote.DetailForecastService
 import com.yb.corethree.data.remote.repos.CurrentWeatherRepository
 import com.yb.corethree.data.remote.repos.DetailForecastRepository
+import com.yb.corethree.data.remote.repos.FakeWeatherRepo
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
 import com.yb.corethree.domain.repos.IDetailForecastRepository
 import dagger.Module
 import dagger.Provides
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.mockk.mockk
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+class TestNetworkModule(
+    private val retrofit: Retrofit = mockk(),
+    private val weatherService: CurrentWeatherService = mockk(),
+    private val forecastService: DetailForecastService = mockk(),
+    private val weatherRepository: ICurrentWeatherRepository = FakeWeatherRepo(),
+    private val forecastRepository: IDetailForecastRepository = mockk()
+) {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit = Retrofit.Builder().baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
+    fun provideRetrofit(): Retrofit = mockk()
 
     @Singleton
     @Provides
@@ -49,15 +51,11 @@ class NetworkModule {
     @Singleton
     @Provides
     @Named("io")
-    fun io() = Schedulers.io()
+    fun io() = Schedulers.trampoline()
 
     @Singleton
     @Provides
     @Named("ui")
-    fun ui() = AndroidSchedulers.mainThread()
-
-    companion object {
-        private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
-    }
+    fun ui() = Schedulers.trampoline()
 
 }

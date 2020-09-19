@@ -26,16 +26,6 @@ class AppModule(private val application: App) {
 
     @Singleton
     @Provides
-    @Named("io")
-    fun io() = Schedulers.io()
-
-    @Singleton
-    @Provides
-    @Named("ui")
-    fun ui() = AndroidSchedulers.mainThread()
-
-    @Singleton
-    @Provides
     fun provideNavigator() = Navigator
 
     @Singleton

@@ -6,9 +6,9 @@ import com.yb.corethree.di.AppModule
 import com.yb.corethree.di.DaggerAppComponent
 import timber.log.Timber
 
-class App: Application() {
+open class App: Application() {
 
-    lateinit var appComponent: AppComponent
+    open lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
