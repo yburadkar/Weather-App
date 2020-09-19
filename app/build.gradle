@@ -45,6 +45,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions.unitTests {
+        includeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -77,6 +81,7 @@ dependencies {
     //Local unit testing
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.hamcrest:hamcrest:$hamcrest_version"
+    testImplementation "org.hamcrest:hamcrest-library:$hamcrest_version"
     testImplementation "org.robolectric:robolectric:$robolectric_version"
     testImplementation "androidx.arch.core:core-testing:$arch_core_testing_version"
     kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
