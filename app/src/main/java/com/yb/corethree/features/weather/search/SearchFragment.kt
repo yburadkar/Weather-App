@@ -87,7 +87,9 @@ class SearchFragment : Fragment() {
                     ?.let { viewModel.updateSearchText(it.toString()) }
             }
             srlCities.setOnRefreshListener {
-                viewModel.searchText.onNext(etCityName.text?.trim().toString())
+                val text = etCityName.text?.trim() ?: ""
+                if(text.length > 2) viewModel.searchText.onNext(etCityName.text?.trim().toString())
+                else srlCities.isRefreshing = false
             }
         }
     }

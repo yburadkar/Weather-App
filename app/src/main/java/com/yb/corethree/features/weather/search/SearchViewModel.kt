@@ -61,6 +61,7 @@ class SearchViewModel @Inject constructor(
             .subscribeBy(
                 onError = {
                     _cities.value = Resource.error(data = null, error = it)
+                    getSearchResults()
                 },
                 onNext = {
                     _cities.value = Resource.success(data = it.cities)
