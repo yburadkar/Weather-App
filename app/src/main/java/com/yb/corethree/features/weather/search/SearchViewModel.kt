@@ -46,6 +46,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun updateSearchText(text: String) {
+        idlingRes.setIdleState(false)
         if (prevSearchTerm != text) {
             searchText.onNext(text)
             prevSearchTerm = text
@@ -54,7 +55,10 @@ class SearchViewModel @Inject constructor(
 
     private fun getSearchResults() {
         searchText.debounce(600, TimeUnit.MILLISECONDS)
-            .map { getMatchingCities(it) }
+            .map {
+                idlingRes.setIdleState(false)
+                getMatchingCities(it)
+            }
             .switchMapSingle {
                 _cities.postValue(Resource.loading(null))
                 Timber.d("Fetching current weather data for ${it.size} cities")
@@ -77,10 +81,12 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun getMatchingCities(searchText: String): List<Int> {
-        return cityList.cities.filter {
+        val cities = cityList.cities.filter {
             it.name.contains(other = searchText, ignoreCase = true)
         }.take(10).also { cities -> Timber.d("${cities.map { it.name }}") }
             .map { it.id }
+        idlingRes.setIdleState(true)
+        return cities
     }
 
     fun navigateToDetail(city: City) {

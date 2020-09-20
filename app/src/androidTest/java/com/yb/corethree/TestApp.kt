@@ -10,7 +10,6 @@ class TestApp : App() {
 
     override fun onCreate() {
         super.onCreate()
-
         appComponent = DaggerTestAppComponent.builder().testNetworkModule(TestNetworkModule(this)).build()
     }
 

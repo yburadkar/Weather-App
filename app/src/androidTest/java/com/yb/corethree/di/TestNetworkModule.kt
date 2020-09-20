@@ -68,12 +68,6 @@ class TestNetworkModule(
 
     @Singleton
     @Provides
-    fun provideWeatherList(): GroupWeatherResponse {
-        return gson().fromJson(application.applicationContext.resources.openRawResource(R.raw.weatherlist_lon_api).bufferedReader().readText(), ApiGroupWeatherResponse::class.java)
-    }
-
-    @Singleton
-    @Provides
     fun gson() = Gson()
 
 }

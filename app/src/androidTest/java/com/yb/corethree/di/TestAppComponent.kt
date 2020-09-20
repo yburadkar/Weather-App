@@ -5,6 +5,6 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [TestAppModule::class, TestNetworkModule::class, ViewModelModule::class])
-interface TestAppComponent: AppComponent {
+interface TestAppComponent : AppComponent {
 
 }
