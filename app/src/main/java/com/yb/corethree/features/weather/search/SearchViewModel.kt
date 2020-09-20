@@ -2,13 +2,16 @@ package com.yb.corethree.features.weather.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.yb.corethree.BuildConfig
 import com.yb.corethree.common.DetailWeatherNavigationEvent
 import com.yb.corethree.common.DisposingViewModel
 import com.yb.corethree.common.Navigator
 import com.yb.corethree.common.Resource
+import com.yb.corethree.common.SimpleIdlingResource
 import com.yb.corethree.common.TextToolbarUpdate
 import com.yb.corethree.common.ToolbarManager
+import com.yb.corethree.data.remote.ApiCity
 import com.yb.corethree.domain.entities.CityList
 import com.yb.corethree.domain.entities.CityWeatherResponse
 import com.yb.corethree.domain.repos.ICurrentWeatherRepository
@@ -28,7 +31,8 @@ class SearchViewModel @Inject constructor(
     @Named("io") private val io: Scheduler,
     @Named("ui") private val ui: Scheduler,
     private val navigator: Navigator,
-    private val toolbarManager: ToolbarManager
+    private val toolbarManager: ToolbarManager,
+    private val idlingRes: SimpleIdlingResource
 ) : DisposingViewModel() {
 
     private val _cities = MutableLiveData<Resource<List<CityWeatherResponse>>>()
@@ -49,11 +53,12 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun getSearchResults() {
-        searchText.debounce(1000, TimeUnit.MILLISECONDS)
+        searchText.debounce(600, TimeUnit.MILLISECONDS)
             .map { getMatchingCities(it) }
             .switchMapSingle {
                 _cities.postValue(Resource.loading(null))
                 Timber.d("Fetching current weather data for ${it.size} cities")
+                idlingRes.setIdleState(false)
                 currentWeatherRepo.getCurrentWeather(it, BuildConfig.OPEN_WEATHER_API_KEY)
             }
             .subscribeOn(io)
@@ -61,10 +66,12 @@ class SearchViewModel @Inject constructor(
             .subscribeBy(
                 onError = {
                     _cities.value = Resource.error(data = null, error = it)
+                    idlingRes.setIdleState(true)
                     getSearchResults()
                 },
                 onNext = {
                     _cities.value = Resource.success(data = it.cities)
+                    idlingRes.setIdleState(true)
                 }
             ).addTo(disposables)
     }

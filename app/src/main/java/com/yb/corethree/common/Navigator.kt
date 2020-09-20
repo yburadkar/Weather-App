@@ -19,4 +19,4 @@ object Navigator {
 
 sealed class NavigationEvent
 object SearchWeatherNavigationEvent : NavigationEvent()
-class DetailWeatherNavigationEvent(val cityId: City) : NavigationEvent()
+data class DetailWeatherNavigationEvent(val city: City) : NavigationEvent()

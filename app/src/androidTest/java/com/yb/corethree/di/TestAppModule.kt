@@ -1,6 +1,7 @@
 package com.yb.corethree.di
 
 import com.yb.corethree.common.Navigator
+import com.yb.corethree.common.SimpleIdlingResource
 import com.yb.corethree.common.ToolbarManager
 import dagger.Module
 import dagger.Provides
@@ -17,5 +18,9 @@ class TestAppModule {
     @Singleton
     @Provides
     fun provideToolbarManager() = ToolbarManager
+
+    @Singleton
+    @Provides
+    fun idlingRes() = SimpleIdlingResource
 
 }

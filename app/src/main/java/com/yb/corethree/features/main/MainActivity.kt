@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         when (navEvent) {
             is SearchWeatherNavigationEvent -> switchFragment(SearchFragment.newInstance(), addToBackStack = false)
             is DetailWeatherNavigationEvent -> {
-                switchFragment(DetailForecastFragment.newInstance(navEvent.cityId), addToBackStack = true)
+                switchFragment(DetailForecastFragment.newInstance(navEvent.city), addToBackStack = true)
             }
         }
     }
