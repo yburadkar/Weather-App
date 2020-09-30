@@ -12,13 +12,13 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.yb.corethree"
+        applicationId "com.yb.openweather"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "com.yb.corethree.runner.CustomAndroidRunner"
+        testInstrumentationRunner "com.yb.openweather.runner.CustomAndroidRunner"
 
         buildConfigField "String", "OPEN_WEATHER_API_KEY", credentialsProperties['OpenWeatherApiFreeKey']
     }

@@ -6,4 +6,5 @@
     <color name="aqua">#03DAC5</color>
     <color name="white">#FFFFFF</color>
     <color name="background">#EDE7F6</color>
+    <color name="surface">#F7F8EE</color>
 </resources>

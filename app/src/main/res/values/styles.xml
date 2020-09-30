@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/purple</item>
         <item name="colorSecondary">@color/aqua</item>
         <item name="colorPrimaryDark">@color/indigo</item>
+        <item name="colorSurface">@color/surface</item>
         <item name="colorAccent">@color/aqua</item>
         <item name="actionBarSize">56dp</item>
         <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>

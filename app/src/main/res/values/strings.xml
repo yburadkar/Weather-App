@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">corethree-kotlin-task</string>
+    <string name="app_name">Open Weather</string>
     <string name="city_name_hint_text">City Name</string>
     <string name="loading_error_message">Failed to load results</string>
     <string name="search_fragment_title">Current Weather</string>
