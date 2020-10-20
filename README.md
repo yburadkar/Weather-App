@@ -47,3 +47,13 @@ This fragment also has its own view model to handle the network calls for loadin
 ## Test Setup
 Abstraction layers are used throughout the app to allow dependencies to be swapped during tests with fakes or mocks. Fake repos and test data are stored in the sharedTest source set so that they can be shared between by the test and androidTest sets.
 TestAppModule replaces the production dependencies in tests. For Android tests TestApplication is used with a custom instrumentation tests runner.
+
+##Running the app
+You will need an Open Weather API key to run this app. 
+Create a credentials.properties file in your root project folder and include your key in the file as below 
+
+```
+#Open Weather API
+OpenWeatherApiFreeKey="YOUR_API_KEY"
+
+```
